@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # 1. Gutandukanya repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # 2. Gushyira Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # 3. Gukora ifoto ya Docker
+      - name: Build Docker image
+        run: docker build -t my-app:latest .
+
+      # 4. Kugenzura niba application ikora neza
+      - name: Run tests
+        run: docker run my-app:latest npm test
